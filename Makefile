@@ -1,5 +1,5 @@
-mem: memory.c
-	gcc memory.c -o memory 
+mem: memory.c malloc.c
+	gcc memory.c malloc.c -o memory 
 
 clean:
 	rm -r memory
