@@ -21,8 +21,8 @@ int rand_between(int min, int max)
 
 int main(int argc, char* argv[])
 {
-    //srand(2315);
-    srand(time(NULL));
+    srand(2315);
+    //srand(time(NULL));
     char* test_string = "Now is the time for all the good people to come to the aid of their country.";
 
     char *ptrs[TEST_SIZE];
@@ -35,6 +35,32 @@ int main(int argc, char* argv[])
         fprintf(stderr,"[%d] size: %d, ", i, size);
 
         ptrs[i] = xmalloc(size);
+
+        if (ptrs[i] == NULL)
+        {
+            printf("[%d] malloc failed\n", i);
+            exit(1);
+        }
+
+        int len_to_copy = MIN(strlen(test_string), size);
+
+        fprintf(stderr,"[%d] ptrs[%d]: %p, going to copy %d chars\n",
+            i, i, ptrs[i], len_to_copy);
+
+        strncpy(ptrs[i], test_string, len_to_copy);
+        ptrs[i][len_to_copy] = '\0';
+
+        fprintf(stderr,"[%x] %s\n\n", i, ptrs[i]);
+    }
+
+    printf("--------------Reallocating--------------\n\n");
+
+    for (int i = 0; i < TEST_SIZE; i++)
+    {
+        int size = rand_between(1,50);
+        fprintf(stderr,"[%d] New size: %d, ", i, size);
+
+        ptrs[i] = xrealloc(ptrs[i], size);
 
         if (ptrs[i] == NULL)
         {
